@@ -2,7 +2,6 @@
 #include "fakeArduino.hpp"
 
 int joyStickPin = A2; //JoyStick connected at pin A2
-int servoPin = 9;
 int joyStickMin = 0; //Min value for the analog pin
 int joyStickMax = 0x3ff; //Max value for the analog pin 
 int servoMax = 0x1ff; //Value that represents the high position (150°)
