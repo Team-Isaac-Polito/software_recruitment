@@ -14,7 +14,7 @@ class TemperatureLogger(Node):
         if (temperature.data >= 50.00): 
             self.get_logger().info('I heard: %.2f' % temperature.data)
             actual_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #I use the package datatime to save the instant when temperature
-            # reaches or ecxceeds 50
+            # reaches or exceeds 50
             self.write_fout("Date: {} Temperature (>= 50 °C): %.2f\n".format(actual_time) % temperature.data) #Writing the date and temperature on the log file 
 
     def write_fout(self, msg): #Method used to print on an output file (log.txt) the temperatures which reaches or 
