@@ -1,4 +1,5 @@
 #include "fakeArduino.hpp"
+#include <string.h>
 
 
 int analogCounter = 0;
@@ -17,6 +18,14 @@ void* reader(void* arg) {
         read(pipeserial[0], &data, 2);
         if (code != 0x1E) _exit(3);
         printf("Moving motor to position: %d\n", data);
+
+        // Read any additional data
+        char buffer[100];
+        int bytesRead = read(pipeserial[0], buffer, sizeof(buffer) - 1);
+        if (bytesRead > 3) {
+            buffer[bytesRead] = '\0'; // Null-terminate the string
+            printf("Received: %s\n", buffer);
+        }
     }
 }
 
@@ -108,5 +117,87 @@ size_t FakeSerial::write(uint8_t* c, size_t s ) {
 size_t FakeSerial::write(char* c, size_t s) {
     return ::write(pipeserial[1], c, s);
 }
+
+// Define constants for pin modes
+#define INPUT 0
+#define OUTPUT 1
+#define INPUT_PULLUP 2
+
+// Define constants for digital values
+#define LOW 0
+#define HIGH 1
+
+// Array to store pin modes
+uint8_t pinModes[20];
+
+// Array to store digital pin values
+uint8_t digitalValues[20];
+
+// Function to set pin mode
+void pinMode(uint8_t pin, uint8_t mode) {
+    if (pin < 20) {
+        pinModes[pin] = mode;
+    }
+}
+
+// Function to write a digital value to a pin
+void digitalWrite(uint8_t pin, uint8_t value) {
+    if (pin < 20 && pinModes[pin] == OUTPUT) {
+        digitalValues[pin] = value;
+    }
+}
+
+// Function to read a digital value from a pin
+int digitalRead(uint8_t pin) {
+    if (pin < 20) {
+        return digitalValues[pin];
+    }
+    return LOW;
+}
+
+// Function to print data to the serial monitor
+void FakeSerial::print(const char* str) {
+    write((uint8_t*)str, strlen(str));
+}
+
+void FakeSerial::println(const char* str) {
+    print(str);
+    write('\n');
+}
+
+// Overloaded functions for printing different data types
+void FakeSerial::print(int val) {
+    char buffer[10];
+    sprintf(buffer, "%d", val);
+    print(buffer);
+}
+
+void FakeSerial::println(int val) {
+    print(val);
+    write('\n');
+}
+
+void FakeSerial::print(long val) {
+    char buffer[20];
+    sprintf(buffer, "%ld", val);
+    print(buffer);
+}
+
+void FakeSerial::println(long val) {
+    print(val);
+    write('\n');
+}
+
+void FakeSerial::print(double val) {
+    char buffer[20];
+    sprintf(buffer, "%f", val);
+    print(buffer);
+}
+
+void FakeSerial::println(double val) {
+    print(val);
+    write('\n');
+}
+
 
 FakeSerial Serial;

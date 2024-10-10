@@ -29,6 +29,9 @@ void loop() {
 
     // Send the buffer in one go
     Serial.write(buffer, 3); // Without buffer, more than one Serial.write causes the loop to stop.
+
+    // Print "Hello World!"
+    //Serial.print("Hello World!");
     
     // Debugging statement to indicate loop iteration
     //printf("Loop iteration completed at time: %lu ms\n", millis());

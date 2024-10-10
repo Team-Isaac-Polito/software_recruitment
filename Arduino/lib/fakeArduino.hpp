@@ -30,6 +30,16 @@ class FakeSerial {
         size_t write(uint8_t*, size_t);
         size_t write(char*, size_t);
         size_t write(uint8_t);
+        
+        // Added functions
+        void print(const char* str);
+        void println(const char* str);
+        void print(int val);
+        void println(int val);
+        void print(long val);
+        void println(long val);
+        void print(double val);
+        void println(double val);
 };
 extern FakeSerial Serial;
 
