@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 // Define the pin numbers
-const int joyPin = A2; // Pin connected to the joystick X-axis
+const int joyPin = A2; // Pin connected to the joystick
 
 // Define the instruction code for moving the motor
 const uint8_t MOVE_MOTOR = 0x1E;
