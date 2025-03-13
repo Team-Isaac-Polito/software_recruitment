@@ -1,4 +1,5 @@
 #include "fakeArduino.hpp"
+#include "fakeArduino.hpp"
 
 void setup() {
     // initializing the serial communication with the provided baud rate
