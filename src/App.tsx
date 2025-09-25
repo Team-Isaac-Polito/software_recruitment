@@ -1,13 +1,8 @@
-import { useState } from "react"
-import type { SidebarMenu } from "./logic/list";
+import HomePage from "./pages/HomePage";
 
 function App() {
-    const [sidebarMenuTask, setSidebarMenuTask] = useState<SidebarMenu[]>();
-    
   return (
-    <>
-    
-    </>
+      <HomePage/>
   )
 }
 
