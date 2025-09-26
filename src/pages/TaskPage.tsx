@@ -7,12 +7,12 @@ type taskFilterType = 'Tutte' | 'Attive'
 
 export function Taskpage() {
     let params = useParams();
-    const {routes, addTask} = useSidebarmenuStore((state) => state)
+    const {routes, addTask, completeTask} = useSidebarmenuStore((state) => state)
     const [openModal, setOpenModal] = useState(false);
     const [taskName, setTaskName] = useState<string>("")
     const [taskFilter, setTaskFilter] = useState<taskFilterType>("Tutte")
 
-        function createRoute() {
+        function createTask() {
             setOpenModal(false)
             addTask(params.taskId!, taskName)
             setTaskName("")
@@ -33,7 +33,7 @@ export function Taskpage() {
                       </div>
                     </ModalBody>
                     <ModalFooter>
-                      <Button onClick={createRoute} color="green">Create</Button>
+                      <Button onClick={createTask} color="green">Create</Button>
                       <Button color="red" onClick={() => setOpenModal(false)}>
                         Close
                       </Button>
@@ -51,7 +51,7 @@ export function Taskpage() {
               .map(route => 
                 route.tasks.map(task =>
                   <article className="flex gap-2 items-center">
-                    <input type="checkbox" checked={task.isCompleted} />
+                    <input type="checkbox" checked={task.isCompleted} onClick={() => completeTask(params.taskId!, task.text)}/>
                     <p key={task.text}>{task.text}</p>
                   </article>
              
