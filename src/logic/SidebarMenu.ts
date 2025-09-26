@@ -2,13 +2,13 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware";
 
 // interfaccia per un task generico
-interface Task {
+export interface Task {
     text: string,
     isCompleted: boolean
 }
 
 // interfaccia per la voce laterale del menù
-interface MyRoute {
+export interface MyRoute {
     text: string,
     tasks: Task[],
 }
@@ -20,6 +20,7 @@ export interface SidebarMenuProps {
     removeRoute: (taskId: string) => void,
     addTask: (taskId: string, newTaskName: string) => void,
     completeTask: (taskId: string, taskName: string) => void,
+    deleteTask: (routeText: string, taskName: string) => void,
 }
 
 export const useSidebarmenuStore = create<SidebarMenuProps>()(
@@ -73,7 +74,7 @@ export const useSidebarmenuStore = create<SidebarMenuProps>()(
                                 ...route,
                                 tasks: route.tasks.map(t => {
                                     if (t.text == taskName) {
-                                        t.isCompleted = true
+                                        return { ...t, isCompleted: !t.isCompleted }
                                     }
                                     return t
                                 })
@@ -82,7 +83,20 @@ export const useSidebarmenuStore = create<SidebarMenuProps>()(
                         return route
                     })
                 ]
-            }))
+            })),
+            deleteTask: (routeText: string, taskName: string) => set((state) => {
+                return {
+                    routes: state.routes.map((route: MyRoute) => {
+                    if (route.text == routeText) {
+                        return {
+                            ...route,
+                            tasks: route.tasks.filter(t => t.text != taskName)
+                        }
+                    }
+                    return route
+                })
+                }
+            })
         }),
         {
             name: "sidebar-menu"

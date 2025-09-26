@@ -1,13 +1,14 @@
-import { Button, ButtonGroup, Modal, ModalBody, ModalFooter, ModalHeader, TextInput } from "flowbite-react";
+import { Button, ButtonGroup, Checkbox, Modal, ModalBody, ModalFooter, ModalHeader, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSidebarmenuStore } from "../logic/SidebarMenu";
+import { useSidebarmenuStore } from "../logic";
+import { MdDelete } from "react-icons/md";
 
-type taskFilterType = 'Tutte' | 'Attive'
+type taskFilterType = 'Tutte' | 'Attive' | "Da fare"
 
 export function Taskpage() {
-    let params = useParams();
-    const {routes, addTask, completeTask} = useSidebarmenuStore((state) => state)
+    const params = useParams();
+    const {routes, addTask, completeTask, deleteTask} = useSidebarmenuStore((state) => state)
     const [openModal, setOpenModal] = useState(false);
     const [taskName, setTaskName] = useState<string>("")
     const [taskFilter, setTaskFilter] = useState<taskFilterType>("Tutte")
@@ -16,6 +17,41 @@ export function Taskpage() {
             setOpenModal(false)
             addTask(params.taskId!, taskName)
             setTaskName("")
+        }
+
+        function showTasks() {
+          if (taskFilter == "Tutte") {
+              return routes.filter(route => route.text == params.taskId)
+              .map(route => 
+                route.tasks.map(task =>
+                  <article className="flex gap-2 items-center">
+                    <Checkbox defaultChecked={task.isCompleted} onChange={() => completeTask(params.taskId!, task.text)}/>
+                    <p key={task.text}>{task.text}</p>
+                    <MdDelete onClick={() => deleteTask(params.taskId!, task.text)} />
+                  </article>
+             
+              )) 
+            } else if (taskFilter == "Attive") {
+              return routes.filter(route => route.text == params.taskId)
+              .map(route => 
+                route.tasks.map(task =>
+                  task.isCompleted ? 
+                  <article className="flex gap-2 items-center">
+                    <Checkbox defaultChecked onChange={() => completeTask(params.taskId!, task.text)} />
+                    <p key={task.text}>{task.text}</p>
+                  </article> : <></>
+              ))
+            } else {
+              return routes.filter(route => route.text == params.taskId)
+              .map(route => 
+                route.tasks.map(task =>
+                  task.isCompleted == false ? 
+                  <article className="flex gap-2 items-center">
+                    <Checkbox onChange={() => completeTask(params.taskId!, task.text)} />
+                    <p key={task.text}>{task.text}</p>
+                  </article> : <></>
+              ))
+            }
         }
     return (
         <section>
@@ -41,30 +77,13 @@ export function Taskpage() {
                   </Modal>
             <h1>Sezione <span className="font-bold ">{params.taskId}</span></h1>
             <Button onClick={() => setOpenModal(true)} className="mt-2 mb-4">Aggiungi task</Button>
-             <ButtonGroup>
+             <ButtonGroup className="mb-4">
                 <Button color="alternative" onClick={() => setTaskFilter("Tutte")}>Tutte</Button>
+                <Button color="alternative" onClick={() => setTaskFilter("Da fare")}>Da fare</Button>
                 <Button color="alternative" onClick={() => setTaskFilter("Attive")}>Attive</Button>
             </ButtonGroup>
             {
-              taskFilter == "Tutte" ?
-              routes.filter(route => route.text == params.taskId)
-              .map(route => 
-                route.tasks.map(task =>
-                  <article className="flex gap-2 items-center">
-                    <input type="checkbox" checked={task.isCompleted} onClick={() => completeTask(params.taskId!, task.text)}/>
-                    <p key={task.text}>{task.text}</p>
-                  </article>
-             
-              )) :
-              routes.filter(route => route.text == params.taskId)
-              .map(route => 
-                route.tasks.map(task =>
-                  task.isCompleted ? 
-                  <article className="flex gap-2 items-center">
-                    <input type="checkbox" checked />
-                    <p key={task.text}>{task.text}</p>
-                  </article> : <></>
-              ))
+              showTasks()
             }
         </section>
     );

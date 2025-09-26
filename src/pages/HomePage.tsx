@@ -1,6 +1,6 @@
-import { useSidebarmenuStore } from "../logic/SidebarMenu";
+import { useSidebarmenuStore } from "../logic/";
 
-export default function HomePage() {
+export function HomePage() {
     const {routes } = useSidebarmenuStore((state) => state)
     return (
         <main className="ml-4">

@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Taskpage } from "./pages/TaskPage";
 import { useSidebarmenuStore } from "./logic/SidebarMenu";
-import { Layout } from "./pages/Layout";
-import HomePage from "./pages/HomePage";
+import { Layout, HomePage, Taskpage } from "./pages/";
 
 function App() {
   const { routes } = useSidebarmenuStore(
