@@ -77,7 +77,7 @@ export function Taskpage() {
                       </Button>
                     </ModalFooter>
                   </Modal>
-            <h1>Sezione <span className="font-bold ">{params.taskId}</span></h1>
+            <h1 className="text-xl md:text-2xl">Sezione <span className="font-bold ">{params.taskId}</span></h1>
             <Button onClick={() => setOpenModal(true)} className="mt-2 mb-4">Aggiungi task</Button>
              <ButtonGroup className="mb-4">
                 <Button color="alternative" onClick={() => setTaskFilter("Tutte")}>Tutte</Button>

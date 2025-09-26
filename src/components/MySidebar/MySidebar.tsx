@@ -1,13 +1,16 @@
 
 "use client";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Sidebar, SidebarItem, SidebarItemGroup, SidebarItems, TextInput } from "flowbite-react";
-import { HiHashtag, HiHome, HiPlus } from "react-icons/hi";
+import { Button, Drawer, DrawerItems, Modal, ModalBody, ModalFooter, ModalHeader, TextInput } from "flowbite-react";
+import { HiHashtag, HiHome, HiMenu, HiPlus } from "react-icons/hi";
 import { useSidebarmenuStore } from "../../logic/SidebarMenu";
 import { MdDelete } from "react-icons/md";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export function MySidebar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClose = () => setIsOpen(false);
     const {routes, addRoute, removeRoute} = useSidebarmenuStore(
         (state) => state
     )
@@ -22,7 +25,7 @@ export function MySidebar() {
   return (
     <>
     <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <ModalHeader>Crea nuova task</ModalHeader>
+        <ModalHeader className="mb-4">Crea nuova task</ModalHeader>
         <ModalBody>
           <div className="space-y-6">
             <TextInput 
@@ -41,30 +44,36 @@ export function MySidebar() {
           </Button>
         </ModalFooter>
       </Modal>
-    <Sidebar aria-label="Default sidebar example">
-      <SidebarItems>
-        <SidebarItemGroup>
-            <SidebarItem href="#" icon={HiPlus} onClick={() => setOpenModal(true)}>
+    <Button onClick={() => setIsOpen(true)}>
+      <HiMenu />
+    </Button>
+    <Drawer open={isOpen} onClose={handleClose}>
+      <DrawerItems>
+        <div>
+            <Button onClick={() => setOpenModal(true)} className="mb-4 flex gap-4 items-center">
+              <HiPlus />
               Crea nuova Raccolta
-            </SidebarItem>
-          <SidebarItem href="/" icon={HiHome}>
+            </Button>
+          <Button href="/" className="flex gap-4 items-center">
+            <HiHome />
             Home Page
-          </SidebarItem>
+          </Button>
           {
             routes.map((elm, index) => {
                 return <Link to={`/${elm.text}`}>
-                <SidebarItem key={index} icon={HiHashtag}>
+                <div key={index} className="w-full my-4">
                     <div className="flex justify-between items-center">
+                      <HiHashtag />
                       {elm.text}
                     <MdDelete onClick={() => removeRoute(elm.text)}/>
                     </div>
-                </SidebarItem>
-                    </Link>
+                </div>
+            </Link>
             })
           }
-        </SidebarItemGroup>
-      </SidebarItems>
-    </Sidebar>
+        </div>
+      </DrawerItems>
+    </Drawer>
     </>
   );
 }
