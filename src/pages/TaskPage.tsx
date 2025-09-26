@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useSidebarmenuStore } from "../logic";
 import { MdDelete } from "react-icons/md";
 
-type taskFilterType = 'Tutte' | 'Attive' | "Da fare"
+type taskFilterType = 'Tutte' | 'Fatte' | "Da fare"
 
 export function Taskpage() {
     const params = useParams();
@@ -31,7 +31,7 @@ export function Taskpage() {
                   </article>
              
               )) 
-            } else if (taskFilter == "Attive") {
+            } else if (taskFilter == "Fatte") {
               return routes.filter(route => route.text == params.taskId)
               .map(route => 
                 route.tasks.map(task =>
@@ -82,7 +82,7 @@ export function Taskpage() {
              <ButtonGroup className="mb-4">
                 <Button color="alternative" onClick={() => setTaskFilter("Tutte")}>Tutte</Button>
                 <Button color="alternative" onClick={() => setTaskFilter("Da fare")}>Da fare</Button>
-                <Button color="alternative" onClick={() => setTaskFilter("Attive")}>Attive</Button>
+                <Button color="alternative" onClick={() => setTaskFilter("Fatte")}>Fatte</Button>
             </ButtonGroup>
             {
               showTasks()
