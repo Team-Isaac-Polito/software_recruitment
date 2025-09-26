@@ -60,7 +60,7 @@ export function MySidebar() {
           </Button>
           {
             routes.map((elm, index) => {
-                return <Link to={`/${elm.text}`}>
+                return <Link to={`/${elm.text}`} onClick={() => setIsOpen(false)}>
                 <div key={index} className="w-full my-4">
                     <div className="flex justify-between items-center">
                       <HiHashtag />
