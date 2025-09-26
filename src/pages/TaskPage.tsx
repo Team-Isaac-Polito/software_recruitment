@@ -24,7 +24,7 @@ export function Taskpage() {
               return routes.filter(route => route.text == params.taskId)
               .map(route => 
                 route.tasks.map(task =>
-                  <article className="flex gap-2 items-center">
+                  <article className="flex gap-8 items-center">
                     <Checkbox defaultChecked={task.isCompleted} onChange={() => completeTask(params.taskId!, task.text)}/>
                     <p key={task.text}>{task.text}</p>
                     <MdDelete onClick={() => deleteTask(params.taskId!, task.text)} />
@@ -36,9 +36,10 @@ export function Taskpage() {
               .map(route => 
                 route.tasks.map(task =>
                   task.isCompleted ? 
-                  <article className="flex gap-2 items-center">
+                  <article className="flex gap-8 items-center">
                     <Checkbox defaultChecked onChange={() => completeTask(params.taskId!, task.text)} />
                     <p key={task.text}>{task.text}</p>
+                    <MdDelete onClick={() => deleteTask(params.taskId!, task.text)} />
                   </article> : <></>
               ))
             } else {
@@ -46,9 +47,10 @@ export function Taskpage() {
               .map(route => 
                 route.tasks.map(task =>
                   task.isCompleted == false ? 
-                  <article className="flex gap-2 items-center">
+                  <article className="flex gap-8 items-center">
                     <Checkbox onChange={() => completeTask(params.taskId!, task.text)} />
                     <p key={task.text}>{task.text}</p>
+                    <MdDelete onClick={() => deleteTask(params.taskId!, task.text)} />
                   </article> : <></>
               ))
             }

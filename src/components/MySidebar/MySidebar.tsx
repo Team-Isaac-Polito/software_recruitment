@@ -45,7 +45,7 @@ export function MySidebar() {
       <SidebarItems>
         <SidebarItemGroup>
             <SidebarItem href="#" icon={HiPlus} onClick={() => setOpenModal(true)}>
-              Create new Task
+              Crea nuova Raccolta
             </SidebarItem>
           <SidebarItem href="/" icon={HiHome}>
             Home Page
