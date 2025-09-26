@@ -1,9 +1,11 @@
-import { MySidebar } from "../components";
+import { useSidebarmenuStore } from "../logic/SidebarMenu";
 
 export default function HomePage() {
+    const {routes } = useSidebarmenuStore((state) => state)
     return (
-        <main>
-            <MySidebar />
+        <main className="ml-4">
+            <h1 className="text-xl md:text-2xl mb-4 font-bold">Benvenuto 👋</h1>
+            <p className="text-lg md:text-xl">Numero di task aggiunte: {routes.length}</p>
         </main>
     );
 }

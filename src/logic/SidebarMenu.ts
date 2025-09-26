@@ -1,9 +1,9 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware";
 
 // interfaccia per un task generico
 interface Task {
     text: string,
-    id: string,
     isCompleted: boolean
 }
 
@@ -15,27 +15,51 @@ interface MyRoute {
 
 // interfacciA la sidebar completa di tutte le tasks
 export interface SidebarMenuProps {
-  routes: MyRoute[],
-  addRoute: (taskText: string) => void,
-  removeRoute: (taskId: string) => void,
+    routes: MyRoute[],
+    addRoute: (taskText: string) => void,
+    removeRoute: (taskId: string) => void,
+    addTask: (taskId: string, newTaskName: string) => void,
 }
 
-export const useSidebarmenuStore = create<SidebarMenuProps>()((set) => ({
-  routes: [],
-  addRoute: (taskText: string) => set((state) => ({
-        ...state,
-        routes: [
-            ...state.routes,
-            {
-                text: taskText,
-                tasks: []
-            }
-        ]
-    })),
-    removeRoute: (taskName: string) => set((state) => ({
-        routes: state.routes.filter((task) => task.text !== taskName)
-    })),
-}));
+export const useSidebarmenuStore = create<SidebarMenuProps>()(
+    persist(
+        (set) => ({
+            routes: [],
+            addRoute: (taskText: string) => set((state) => ({
+                ...state,
+                routes: [
+                    ...state.routes,
+                    {
+                        text: taskText,
+                        tasks: []
+                    }
+                ]
+            })),
+            removeRoute: (taskName: string) => set((state) => ({
+                routes: state.routes.filter((task) => task.text !== taskName)
+            })),
+            addTask: (taskId: string, newTaskName: string) => set((state) => ({
+                routes: [
+                    ...state.routes.map((route) => {
+                        if (route.text == taskId) {
+                            return {
+                                ...route,
+                                tasks: [
+                                    ...route.tasks,
+                                    { text: newTaskName, isCompleted: false },
+                                ]
+                            }
+                        }
+                        return route
+                    })
+                ]
+            }))
+        }),
+        {
+            name: "sidebar-menu"
+        }
+    )
+);
 
 /*
     sidebarMenuTasks = [

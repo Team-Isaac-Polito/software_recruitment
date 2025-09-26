@@ -1,21 +1,23 @@
 
 "use client";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Sidebar, SidebarItem, SidebarItemGroup, SidebarItems, TextInput } from "flowbite-react";
-import { HiPlus } from "react-icons/hi";
+import { HiHashtag, HiHome, HiPlus } from "react-icons/hi";
 import { useSidebarmenuStore } from "../../logic/SidebarMenu";
 import { MdDelete } from "react-icons/md";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export function MySidebar() {
     const {routes, addRoute, removeRoute} = useSidebarmenuStore(
         (state) => state
     )
-    const [openModal, setOpenModal] = useState(true);
+    const [openModal, setOpenModal] = useState(false);
     const [routeName, setRouteName] = useState<string>("")
 
     function createRoute() {
         setOpenModal(false)
         addRoute(routeName)
+        setRouteName("")
     }
   return (
     <>
@@ -42,15 +44,22 @@ export function MySidebar() {
     <Sidebar aria-label="Default sidebar example">
       <SidebarItems>
         <SidebarItemGroup>
-          <SidebarItem href="#" icon={HiPlus} onClick={() => setOpenModal(true)}>
-            Create new Task
+            <SidebarItem href="#" icon={HiPlus} onClick={() => setOpenModal(true)}>
+              Create new Task
+            </SidebarItem>
+          <SidebarItem href="/" icon={HiHome}>
+            Home Page
           </SidebarItem>
           {
             routes.map((elm, index) => {
-                return <SidebarItem key={index} className="flex justify-between items-center">
-                    {elm.text}
+                return <Link to={`/${elm.text}`}>
+                <SidebarItem key={index} icon={HiHashtag}>
+                    <div className="flex justify-between items-center">
+                      {elm.text}
                     <MdDelete onClick={() => removeRoute(elm.text)}/>
+                    </div>
                 </SidebarItem>
+                    </Link>
             })
           }
         </SidebarItemGroup>
