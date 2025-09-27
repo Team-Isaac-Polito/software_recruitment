@@ -2,7 +2,7 @@
 "use client";
 import { Button, Drawer, DrawerItems, Modal, ModalBody, ModalFooter, ModalHeader, TextInput } from "flowbite-react";
 import { HiHashtag, HiHome, HiMenu, HiPlus } from "react-icons/hi";
-import { useSidebarmenuStore } from "../../logic/SidebarMenu";
+import { useSidebarmenuStore } from "../../logic/useSidebarMenuStore";
 import { MdDelete } from "react-icons/md";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -50,18 +50,18 @@ export function MySidebar() {
     <Drawer open={isOpen} onClose={handleClose}>
       <DrawerItems>
         <div>
-            <Button onClick={() => setOpenModal(true)} className="mb-4 flex gap-4 items-center">
+            <Button onClick={() => setOpenModal(true)} className="mb-4 flex gap-4 items-center w-full">
               <HiPlus />
               Crea nuova Raccolta
             </Button>
-          <Button href="/" className="flex gap-4 items-center">
+          <Button href="/" className="flex gap-4 items-center" color="alternative">
             <HiHome />
             Home Page
           </Button>
           {
             routes.map((elm, index) => {
-                return <Link to={`/${elm.text}`} onClick={() => setIsOpen(false)}>
-                <div key={index} className="w-full my-4">
+                return <Link to={`/${elm.text}`} onClick={() => setIsOpen(false)} key={index}>
+                <div  className="w-full my-4">
                     <div className="flex justify-between items-center">
                       <HiHashtag />
                       {elm.text}

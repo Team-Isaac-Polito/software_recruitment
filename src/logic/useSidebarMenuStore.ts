@@ -1,10 +1,12 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware";
 
+export type importance = "Important" | "Not important"
 // interfaccia per un task generico
 export interface Task {
     text: string,
-    isCompleted: boolean
+    isCompleted: boolean,
+    importance: importance
 }
 
 // interfaccia per la voce laterale del menù
@@ -18,7 +20,7 @@ export interface SidebarMenuProps {
     routes: MyRoute[],
     addRoute: (taskText: string) => void,
     removeRoute: (taskId: string) => void,
-    addTask: (taskId: string, newTaskName: string) => void,
+    addTask: (taskId: string, newTaskName: string, importance: importance) => void,
     completeTask: (taskId: string, taskName: string) => void,
     deleteTask: (routeText: string, taskName: string) => void,
 }
@@ -46,7 +48,7 @@ export const useSidebarmenuStore = create<SidebarMenuProps>()(
             removeRoute: (taskName: string) => set((state) => ({
                 routes: state.routes.filter((task) => task.text !== taskName)
             })),
-            addTask: (taskId: string, newTaskName: string) => set((state) => ({
+            addTask: (taskId: string, newTaskName: string, importance: importance) => set((state) => ({
                 routes: [
                     ...state.routes.map((route) => {
                         if (route.text == taskId) {
@@ -58,7 +60,7 @@ export const useSidebarmenuStore = create<SidebarMenuProps>()(
                                 ...route,
                                 tasks: [
                                     ...route.tasks,
-                                    { text: newTaskName, isCompleted: false },
+                                    { text: newTaskName, isCompleted: false, importance: importance },
                                 ]
                             }
                         }

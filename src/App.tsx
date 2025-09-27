@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useSidebarmenuStore } from "./logic/SidebarMenu";
+import { useSidebarmenuStore } from "./logic/useSidebarMenuStore";
 import { Layout, HomePage, Taskpage } from "./pages/";
 
 function App() {
