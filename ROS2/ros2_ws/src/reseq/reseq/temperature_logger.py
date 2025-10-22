@@ -50,11 +50,11 @@ class TemperatureLogger(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    logger = TemperatureLogger("log.txt")
+    temperature_logger = TemperatureLogger("log.txt")
 
     rclpy.spin(logger)
 
-    logger.destroy_node()
+    temperature_logger.destroy_node()
     rclpy.shutdown()
 
 
