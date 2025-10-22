@@ -1,0 +1,24 @@
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    """
+    Launch file to start both TemperatureSensor and TemperatureLogger nodes.
+    """
+    return LaunchDescription([
+        # Start the temperature sensor node
+        Node(
+            package='reseq',
+            executable='temperature_sensor',
+            name='temperature_sensor',
+            output='screen'
+        ),
+        
+        # Start the temperature logger node
+        Node(
+            package='reseq',
+            executable='temperature_logger',
+            name='temperature_logger',
+            output='screen'
+        ),
+    ])
